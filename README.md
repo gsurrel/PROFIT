@@ -77,6 +77,12 @@ pid,name,cpu_percent,mem_real,num_open_files,creation_epoch,timestamp
 846,firefox,0.2,313933824,64,1689698014.07237,1690821727.634214
 ```
 
+## Detecting memory leaks
+
+Memory leaks should be diagnosed with proper tools, such as [Valgrind](https://valgrind.org/). However, `PROFIT` tries to guess if there is some possible leak using the following heuristic:
+
+> For a process recorded, a memory leak is considered as happening if the trend line of its memory usage `real_mem` has been strictly increasing for the second half of the recording.
+
 
 # Changelog
 
