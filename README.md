@@ -92,10 +92,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
-First release, for fun and `PROFIT`! 🎉
-
 ### Added
-- Create the initial project.
+
 
 ### Changed
 
@@ -111,6 +109,13 @@ First release, for fun and `PROFIT`! 🎉
 
 ### Security
 
+
+## [1.0.0]
+
+First release, for fun and `PROFIT`! 🎉
+
+### Added
+- Create the initial project.
 
 
 ## Why the name
