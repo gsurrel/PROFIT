@@ -1,17 +1,23 @@
 from profit.args import get_args
-from pprint import pprint
 
-import profit.sampler as sample
+import profit.sampler as sampler
+import profit.writer as writer
+
+import datetime
+
+from pathlib import Path
 
 
 def main():
     args = get_args()
 
     # Start collecting samples
-    samples = sample.start(args)
+    samples = sampler.start(args)
 
-    # Results
-    pprint(samples)
+    # Write the collected data
+    now = datetime.datetime.now().isoformat().replace(":", ".").replace("T", " ")
+    path = Path(args.output) / f"{now} {args.process}.csv"
+    writer.to_csv(samples, path)
 
 
 if __name__ == "__main__":

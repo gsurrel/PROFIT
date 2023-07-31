@@ -1,4 +1,5 @@
 import argparse
+import tempfile
 
 
 def get_args():
@@ -25,5 +26,11 @@ def get_args():
         default=5,
         help="pace at which to sample (in seconds)",
         type=int,
+    )
+    parser.add_argument(
+        "--output",
+        action="store",
+        default=tempfile.mkdtemp(),
+        help="directory in which to write the collected data",
     )
     return parser.parse_args()

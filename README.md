@@ -59,6 +59,24 @@ The library used to collect data is `https://pypi.org/project/psutil/`, which ha
 
 *Note:* Accessing some information from a different user (*eg.* `root`) might be forbidden. Starting the tool using `sudo` may be a legitimate workaround in some cases.
 
+## Writing to CSV
+
+Even though CSV files are very loosely defined and should not be used as a database, they are very often used to exchange data. Generating a CSV file from the collected data is an easy way to import it in another software. The CSV format is as follows:
+
+| pid | name | cpu_percent | mem_real | num_open_files | creation_epoch | timestamp |
+|-----|------|-------------|----------|----------------|----------------|-----------|
+| int | str  | float       | int      | int            | float          | float     |
+
+Example of data collected:
+
+```csv
+pid,name,cpu_percent,mem_real,num_open_files,creation_epoch,timestamp
+846,firefox,0.2,313929728,64,1689698014.07237,1690821721.743656
+846,firefox,0.2,313933824,64,1689698014.07237,1690821723.630731
+846,firefox,0.9,313933824,64,1689698014.07237,1690821725.6158972
+846,firefox,0.2,313933824,64,1689698014.07237,1690821727.634214
+```
+
 
 # Changelog
 
@@ -68,10 +86,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
-First release of PROFIT, for fun and profit! 🎉
+First release, for fun and `PROFIT`! 🎉
 
 ### Added
-- Create the initial project
+- Create the initial project.
 
 ### Changed
 
