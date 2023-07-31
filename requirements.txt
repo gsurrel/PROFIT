@@ -1,2 +1,3 @@
-argparse==1.4.0
-progress==1.6
+argparse==1.4.0  # Python Software Foundation License
+progress==1.6  # ISC License (ISCL) (ISC)
+psutil==5.9.5  # BSD License (BSD-3-Clause)

@@ -1,7 +1,7 @@
 from profit.args import get_args
-import profit.sampler as sample
-
 from pprint import pprint
+
+import profit.sampler as sample
 
 
 def main():

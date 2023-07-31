@@ -38,7 +38,7 @@ $ python profit acme --pace=1 --duration=60
 
 ## Supported platforms
 
-This tool has been tested on Linux and macOS. It may work on other platforms, but this is untested.
+This tool has been tested on Linux and macOS. It may work on other platforms, but this is untested. In particular, the library used to retrieve the process information (`psutil`) provides different features for the different platforms. For example, there is no good way to have the private memory used on macOS, and the number of open files are accessed differently on Unix systems and on Windows. Creating a full wrapper over `psutil` to abstract this kind of information is out of scope of this project.
 
 
 # Design decisions
@@ -47,11 +47,17 @@ This tool should not require installing 3rd party dependencies.
 
 ## Time management
 
-The clock used for the duration of the sampling is a monotonic clock, to avoid any problems with time-zome changes or Daylight Saving Time (DST) where the wall clock can jump back and forth. This also applies to leap seconds and similar matters.
+The clock used for the duration of the sampling is a monotonic clock, to avoid any problems with time-zone changes or Daylight Saving Time (DST) where the wall clock can jump back and forth. This also applies to leap seconds and similar matters.
 
 However, the samples are timestamped using the Unix Epoch, in order to know when an event happened, according to the date and time used by humans.
 
 Finally, the sampling will stop with exactly one sample after the moment the duration timer has expired. This is to ensure to have at least the range asked for. For example, sampling a process every 5 seconds, for a duration of 7 seconds will yield 3 samples at times t=0, t=5, and t=7.
+
+## Data collected
+
+The library used to collect data is `https://pypi.org/project/psutil/`, which has some limitations. Namely, it doesn't expose the private memory used by a process in a cross-platform way (or at all in the case of macOS). Therefore, the reported memory is the (resident set size)[https://en.wikipedia.org/wiki/Resident_set_size], which means the actual RAM used by the process.
+
+*Note:* Accessing some information from a different user (*eg.* `root`) might be forbidden. Starting the tool using `sudo` may be a legitimate workaround in some cases.
 
 
 # Changelog
@@ -62,7 +68,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
-First release of PROFIT.
+First release of PROFIT, for fun and profit! 🎉
 
 ### Added
 - Create the initial project

@@ -1,6 +1,8 @@
 from progress.bar import Bar
+import psutil
 
 import time
+from pprint import pprint
 
 
 def start(args):
@@ -25,8 +27,9 @@ def start(args):
             current_time += delta
 
             # Simulate sampling
-            time.sleep(0.3)
-            samples.append({"time": time.time()})
+            sample = get_sample(args.process, sample_duration=args.pace * 0.8)
+            sample["timestamp"] = time.time()
+            samples.append(sample)
 
             # Update the progressbar and break-loop condition
             bar.next(delta / 1e9)
@@ -39,3 +42,41 @@ def start(args):
             time.sleep(wake_up_delay)
 
     return samples
+
+
+def get_sample(process_name, sample_duration=0.4):
+    """Collect a smaple for the given process name. If multiple processes start with the same same, the first one is
+    returned."""
+    processes = []
+    for proc in psutil.process_iter(
+        ["pid", "name", "cpu_percent", "memory_info", "open_files"]
+    ):
+        processes.append(proc)
+
+    # Filter by process names
+    processes = filter(lambda p: p.info["name"] == process_name, processes)
+
+    # Delay to get proper sampling (eg. CPU usage)
+    time.sleep(sample_duration)
+
+    # Fetch the values
+    processes = map(lambda p: get_process_stats(p), processes)
+
+    # Collect and return
+    processes = list(processes)
+    return processes[0] if len(processes) else None
+
+
+def get_process_stats(process):
+    """Fetches the interesting process information. This may crash when trying to get information from a process the
+    user hasn't created because of permission restrictions. Starting as root solves this problem. This is a deliberate
+    decision instead of reporting bogus data (0 or None) silently."""
+    with process.oneshot():
+        return {
+            "pid": process.pid,
+            "name": process.name(),
+            "cpu_percent": process.cpu_percent(),
+            "mem_real": process.memory_info().rss,  # Reports the "Real memory" as System Monitor, unlike the "Private memory" as asked, because (it is broken on macOS)[https://psutil.readthedocs.io/en/latest/#psutil.Process.memory_maps]
+            "num_open_files": len(process.open_files()),
+            "creation_epoch": process.create_time(),
+        }
