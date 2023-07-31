@@ -93,19 +93,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
-
+- Support multiple processes with the same name.
 
 ### Changed
-
+- The CSV output has one more column to get stable and unique PIDs in case of recycling.
 
 ### Deprecated
 
-
 ### Removed
 
-
 ### Fixed
-
 
 ### Security
 

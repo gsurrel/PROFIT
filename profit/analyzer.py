@@ -10,7 +10,8 @@ def linear_regression(x, y):
     intercept == 2.2
     """
 
-    assert(len(x) == len(y))
+    if (len(x) == len(y)) or len(x) == 1:
+        return None, None
 
     # Calculate the means of x and y
     n = len(x)
@@ -41,12 +42,13 @@ def find_mem_leak(samples):
     #print(f"Regression with slope {slope} and intercept {intercept}")
 
     # Return the PID and process creation time of the process detected
-    return [(
+    return (
         {
             "pid": samples[0]["pid"],
             "creation_epoch": samples[0]["creation_epoch"],
+            "channel": "mem_real",
             "warning": "POSSIBLE_MEMORY_LEAK",
         }
-        if slope > 0
+        if slope != None and slope > 0
         else None
-    )]
+    )

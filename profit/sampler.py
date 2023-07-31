@@ -9,7 +9,7 @@ def start(args):
     """Start the sampling of the process metrics. There will be one last sample point after the time has run out to
     ensure all required data is captured."""
 
-    samples = []
+    samples_per_pid = {}
 
     # Using a non-float monotonic clock to avoid being messed-up by clock changes (time-zime or DST changes)
     start_time = time.monotonic_ns()
@@ -26,10 +26,15 @@ def start(args):
             delta = time.monotonic_ns() - current_time
             current_time += delta
 
-            # Simulate sampling
-            sample = get_sample(args.process, sample_duration=args.pace * 0.8)
-            sample["timestamp"] = time.time()
-            samples.append(sample)
+            # Sampling (getting multiple samples if several processes match)
+            samples = get_sample(args.process, sample_duration=args.pace * 0.8)
+            now = time.time()
+            for sample in filter(lambda s: s != None, samples):
+                # Generate a string that ensure no collisions even if a PID is recycled
+                pid_stable = f"{sample['pid']} {sample['creation_epoch']}"
+                if pid_stable not in samples_per_pid:
+                    samples_per_pid[pid_stable] = []
+                samples_per_pid[pid_stable].append({"timestamp": now, **sample})
 
             # Update the progressbar and break-loop condition
             bar.next(delta / 1e9)
@@ -41,12 +46,11 @@ def start(args):
             )
             time.sleep(wake_up_delay)
 
-    return samples
+    return samples_per_pid
 
 
 def get_sample(process_name, sample_duration=0.4):
-    """Collect a smaple for the given process name. If multiple processes start with the same same, the first one is
-    returned."""
+    """Collect a smaple for the given process name."""
     processes = []
     for proc in psutil.process_iter(
         ["pid", "name", "cpu_percent", "memory_info", "open_files"]
@@ -64,7 +68,7 @@ def get_sample(process_name, sample_duration=0.4):
 
     # Collect and return
     processes = list(processes)
-    return processes[0] if len(processes) else None
+    return processes if len(processes) else None
 
 
 def get_process_stats(process):
@@ -72,11 +76,15 @@ def get_process_stats(process):
     user hasn't created because of permission restrictions. Starting as root solves this problem. This is a deliberate
     decision instead of reporting bogus data (0 or None) silently."""
     with process.oneshot():
-        return {
-            "pid": process.pid,
-            "name": process.name(),
-            "cpu_percent": process.cpu_percent(),
-            "mem_real": process.memory_info().rss,  # Reports the "Real memory" as System Monitor, unlike the "Private memory" as asked, because (it is broken on macOS)[https://psutil.readthedocs.io/en/latest/#psutil.Process.memory_maps]
-            "num_open_files": len(process.open_files()),
-            "creation_epoch": process.create_time(),
-        }
+        try:
+            stats = {
+                "pid": process.pid,
+                "name": process.name(),
+                "cpu_percent": process.cpu_percent(),
+                "mem_real": process.memory_info().rss,  # Reports the "Real memory" as System Monitor, unlike the "Private memory" as asked, because (it is broken on macOS)[https://psutil.readthedocs.io/en/latest/#psutil.Process.memory_maps]
+                "num_open_files": len(process.open_files()),
+                "creation_epoch": process.create_time(),
+            }
+        except:
+            stats = None
+        return stats
