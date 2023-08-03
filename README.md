@@ -1,4 +1,4 @@
-# Process Resource Oversight and Information Tracker: `PROFIT`
+# Process Resource Oversight and Friendly Information Tracker: `PROFIT`
 
 `PROFIT` is a sampling resource tracker that can look very similar to other tools:
 
@@ -120,6 +120,8 @@ First release, for fun and `PROFIT`! 🎉
 Finding a name is difficult, especially when looking for a playful and memorable name in a language that's not your own native language. It was a good opportunity to see what a machine running a generative large language-model could come-up with. I selected the following out if the three tries I did:
 
 > How about `PROFIT` - Process Resource Oversight and Information Tracker? It's a playful and amusing acronym that highlights the utility's purpose of keeping an eye on resource usage while also suggesting that it helps you make more "profitable" decisions regarding system resources.
+
+Note it lacks the `F` so I needed to fix it.
 
 Here is what you avoided:
 
