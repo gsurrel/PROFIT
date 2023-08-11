@@ -1,0 +1,127 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "samples.csv",
+    "format": {
+      "type": "csv"
+    }
+  },
+  "transform": [
+    {
+      "calculate": "datum.timestamp * 1000",
+      "as": "datetime"
+    },
+    {
+      "fold": [
+        "cpu_percent",
+        "mem_real",
+        "num_open_files"
+      ]
+    },
+    {
+      "calculate": "datum.key",
+      "as": "warning"
+    },
+    {
+      "lookup": "pid_stable",
+      "from": {
+        "data": {
+          "url": "analysis.csv",
+          "format": {
+            "type": "csv"
+          }
+        },
+        "key": "pid_stable",
+        "fields": [
+          "warning",
+          "channel"
+        ]
+      },
+      "as": [
+        "warning",
+        "warning_channel"
+      ]
+    },
+    {
+      "calculate": "datum.warning_channel == datum.key",
+      "as": "warning"
+    }
+  ],
+  "selection": {
+    "grid_x": {
+      "type": "interval",
+      "bind": "scales",
+      "encodings": [
+        "x"
+      ]
+    }
+  },
+  "mark": {
+    "type": "line",
+    "point": true
+  },
+  "resolve": {
+    "scale": {
+      "y": "independent"
+    },
+    "axis": {
+      "x": "independent"
+    }
+  },
+  "width": 600,
+  "encoding": {
+    "x": {
+      "field": "datetime",
+      "type": "temporal",
+      "title": "Date and time (local)",
+      "axis": {
+        "format": "%X\\n%x"
+      }
+    },
+    "y": {
+      "field": "value",
+      "type": "quantitative",
+      "scale": {
+        "zero": false
+      },
+      "title": null
+    },
+    "strokeDash": {
+      "field": "warning",
+      "legend": null
+    },
+    "color": {
+      "field": "pid_stable",
+      "legend": null
+    },
+    "row": {
+      "field": "key",
+      "title": null
+    },
+    "tooltip": [
+      {
+        "title": "PID",
+        "field": "pid"
+      },
+      {
+        "title": "Process",
+        "field": "name"
+      },
+      {
+        "title": "Metric name",
+        "field": "key"
+      },
+      {
+        "title": "Metric value",
+        "field": "value"
+      },
+      {
+        "title": "Warning",
+        "field": "warning"
+      }
+    ]
+  },
+  "config": {
+    "lineBreak": "\\n"
+  }
+}

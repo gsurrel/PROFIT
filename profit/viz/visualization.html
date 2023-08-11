@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<!-- Taken from https://vega.github.io/vega-lite/tutorials/getting_started.html#embed -->
+
+<head>
+    <title>PROFIT usage viewer</title>
+    <meta charset="utf-8" />
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.25.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.12.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.22.1"></script>
+
+    <style media="screen">
+        .vega-actions a {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1><a href="https://github.com/gsurrel/PROFIT">PROFIT</a> usage viewer</h1>
+    <!-- Container for the visualization -->
+    <div id="vis"></div>
+
+    <script>
+        // Embed the visualization in the container with id `vis`
+        vegaEmbed('#vis', 'spec.json');
+    </script>
+</body>
+
+</html>

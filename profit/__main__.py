@@ -35,6 +35,9 @@ def main():
     writer.to_csv(flat_samples, path / "samples.csv")
     writer.to_csv(analyses, path / "analysis.csv")
 
+    # Add the visualization
+    writer.generate_visualization(path)
+
 
 if __name__ == "__main__":
     main()
