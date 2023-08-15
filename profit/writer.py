@@ -1,6 +1,7 @@
 import csv
 import os
 
+from pathlib import Path
 from shutil import copyfile
 
 
@@ -27,20 +28,17 @@ def to_csv(data, path):
     print(f"Written collected data to {path}")
 
 
-def generate_visualization(path):
+def generate_visualization(destination):
     """Copy the required files to get the visualization working"""
     viz_root = os.path.dirname(os.path.realpath(__name__)) + "/profit/viz/"
 
     # List files to copy
     files = [
-        os.path.join(dirpath, f)
+        Path(os.path.join(dirpath, f))
         for (dirpath, dirnames, filenames) in os.walk(viz_root)
         for f in filenames
     ]
 
     # Copy files
-    for filename in files:
-        copyfile(
-            os.path.dirname(os.path.realpath(__name__)) + "/profit/viz/" + filename,
-            path / filename,
-        )
+    for fullpath in files:
+        copyfile(fullpath, destination / fullpath.name)

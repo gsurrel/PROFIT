@@ -10,7 +10,7 @@ def linear_regression(x, y):
     intercept == 2.2
     """
 
-    if (len(x) == len(y)) or len(x) == 1:
+    if (len(x) != len(y)) or len(x) == 1:
         return None, None
 
     # Calculate the means of x and y
@@ -39,16 +39,41 @@ def find_mem_leak(samples):
     x = [s["timestamp"] for s in samples_filtered]
     y = [s["mem_real"] for s in samples_filtered]
     slope, intercept = linear_regression(x, y)
-    #print(f"Regression with slope {slope} and intercept {intercept}")
 
     # Return the PID and process creation time of the process detected
     return (
         {
-            "pid": samples[0]["pid"],
-            "creation_epoch": samples[0]["creation_epoch"],
             "channel": "mem_real",
+            "creation_epoch": samples[0]["creation_epoch"],
+            "name": samples[0]["name"],
+            "pid": samples[0]["pid"],
             "warning": "POSSIBLE_MEMORY_LEAK",
         }
         if slope != None and slope > 0
         else None
     )
+
+
+def get_average(samples):
+    """Compute the average of the given samples, for each metric channel."""
+
+    if not len(samples):
+        return None
+
+    # Dictionnary to hold the computed statistics
+    averages = {
+        "creation_epoch": samples[0]["creation_epoch"],
+        "name": samples[0]["name"],
+        "pid": samples[0]["pid"],
+    }
+
+    # For each metric recorded, compute the average
+    channels = ["cpu_percent", "mem_real", "num_open_files"]
+    for channel in [key for key in samples[0].keys() if key in channels]:
+        sum = 0
+        for sample in samples:
+            sum += sample[channel]
+        averages[f"{channel}_avg"] = sum / len(samples)
+
+    # Return the PID and process creation time of the process detected
+    return averages
