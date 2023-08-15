@@ -33,4 +33,10 @@ def get_args():
         default=tempfile.mkdtemp(),
         help="directory in which to write the collected data",
     )
+    parser.add_argument(
+        "--serve-viz",
+        action="store_true",
+        default=tempfile.mkdtemp(),
+        help="start the server to open the visualization",
+    )
     return parser.parse_args()

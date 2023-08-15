@@ -36,6 +36,9 @@ Sampling the process `acme` every second for 60 seconds, do as follows:
 $ python profit acme --pace=1 --duration=60
 ```
 
+## Viewing the data
+
+A basic visualization of the data collected is created next to the CSV files. It consists in a static HTML file, with a [Vega-Lite](https://vega.github.io/vega-lite/) visualization. The different metrics are split in three graphs, where each process is displayed as a line. If a process is suspected to have a memory leak, its line is dashed rather than solid. For convenience, use the `--serve-viz` flag to start a simple server to open the visualization (which is needed to work around browser restrictions when running JavaScript from local files).
 
 ## Supported platforms
 
@@ -44,7 +47,7 @@ This tool has been tested on Linux and macOS. It may work on other platforms, bu
 
 # Design decisions
 
-This tool should not require installing 3rd party dependencies.
+This tool should not require installing non-Python dependencies.
 
 ## Time management
 
@@ -95,7 +98,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 - Use glob patterns to select the processes to sample.
-- Basic CSS-less light/dark mode for the visualization
+- Basic CSS-less light/dark mode for the visualization.
+- Add command-line argument to start a server for the visualization.
 
 ### Changed
 

@@ -3,6 +3,7 @@ from profit.args import get_args
 import profit.analyzer as analyzer
 import profit.sampler as sampler
 import profit.writer as writer
+import profit.server as server
 
 import datetime
 import os
@@ -41,6 +42,8 @@ def main():
 
     # Manage the visualization
     writer.generate_visualization(path)
+    if args.serve_viz:
+        server.start(path)
 
 
 if __name__ == "__main__":
