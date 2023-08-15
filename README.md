@@ -5,6 +5,7 @@
 - Periodically samples CPU, (private) memory, and number of file descriptors opened,
 - Limits the processes selected for sampling,
 - Samples for a predefined amount of time,
+- Compute the average of the collected metrics,
 - Logs the data as a CSV file.
 
 ## Installation
@@ -93,10 +94,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
-- Support multiple processes with the same name.
 
 ### Changed
-- The CSV output has one more column to get stable and unique PIDs in case of recycling.
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [1.1.0]
+
+### Added
+- Support multiple processes with the same name.
+- Visualization of the collected data, using Vega-Lite.
+- Computation of the average value of the metrics per process.
+
+### Changed
+- The CSV output has two more columns (unique PID and process name) to get stable and unique PIDs in case of recycling.
 
 ### Deprecated
 
@@ -121,7 +139,7 @@ Finding a name is difficult, especially when looking for a playful and memorable
 
 > How about `PROFIT` - Process Resource Oversight and Information Tracker? It's a playful and amusing acronym that highlights the utility's purpose of keeping an eye on resource usage while also suggesting that it helps you make more "profitable" decisions regarding system resources.
 
-Note it lacks the `F` so I needed to fix it.
+Note it lacks the `F`, so I needed to fix it.
 
 Here is what you avoided:
 
