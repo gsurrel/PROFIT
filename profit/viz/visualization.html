@@ -5,12 +5,19 @@
 <head>
     <title>PROFIT usage viewer</title>
     <meta charset="utf-8" />
+    <meta name="color-scheme" content="dark light" />
 
     <script src="https://cdn.jsdelivr.net/npm/vega@5.25.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.12.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.22.1"></script>
 
     <style media="screen">
+        h1 {
+            border-bottom: 1px solid Highlight;
+            margin: 0;
+            padding: 2mm 1cm;
+        }
+
         .vega-actions a {
             margin-right: 5px;
         }
@@ -24,7 +31,7 @@
 
     <script>
         // Embed the visualization in the container with id `vis`
-        vegaEmbed('#vis', 'spec.json');
+        vegaEmbed('#vis', 'spec.json', { renderer: 'svg' });
     </script>
 </body>
 

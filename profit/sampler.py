@@ -1,8 +1,8 @@
 from progress.bar import Bar
 import psutil
 
+import fnmatch
 import time
-from pprint import pprint
 
 
 def start(args):
@@ -49,8 +49,8 @@ def start(args):
     return samples_per_pid
 
 
-def get_sample(process_name, sample_duration=0.4):
-    """Collect a smaple for the given process name."""
+def get_sample(process_name_pattern, sample_duration=0.4):
+    """Collect a smaple for the given process name (can be a glob patterns)."""
     processes = []
     for proc in psutil.process_iter(
         ["pid", "name", "cpu_percent", "memory_info", "open_files"]
@@ -58,7 +58,9 @@ def get_sample(process_name, sample_duration=0.4):
         processes.append(proc)
 
     # Filter by process names
-    processes = filter(lambda p: p.info["name"] == process_name, processes)
+    processes = filter(
+        lambda p: fnmatch.fnmatch(p.info["name"], process_name_pattern), processes
+    )
 
     # Delay to get proper sampling (eg. CPU usage)
     time.sleep(sample_duration)

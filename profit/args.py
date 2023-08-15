@@ -11,7 +11,7 @@ def get_args():
     )
     parser.add_argument(
         "process",
-        help="name of the process to watch",
+        help="name of the process to watch, can be a glob pattern",
     )
     parser.add_argument(
         "--duration",

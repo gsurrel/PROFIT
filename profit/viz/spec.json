@@ -122,6 +122,24 @@
     ]
   },
   "config": {
+    "background": "Canvas",
+    "view": {
+      "stroke": "CanvasText",
+      "strokeOpacity": 0.8,
+      "fill": "CanvasText",
+      "opacity": 0.01
+    },
+    "title": {"color": "CanvasText", "subtitleColor": "CanvasText"},
+    "style": {
+      "guide-label": {"fill": "CanvasText"},
+      "guide-title": {"fill": "CanvasText"}
+    },
+    "axis": {
+      "domainColor": "CanvasText",
+      "gridColor": "CanvasText",
+      "gridOpacity": 0.2,
+      "tickColor": "CanvasText"
+    },
     "lineBreak": "\\n"
   }
 }
