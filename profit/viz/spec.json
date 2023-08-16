@@ -81,9 +81,6 @@
     "y": {
       "field": "value",
       "type": "quantitative",
-      "scale": {
-        "zero": false
-      },
       "title": null
     },
     "strokeDash": {
